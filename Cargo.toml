@@ -1,0 +1,17 @@
+[workspace]
+resolver = "3"
+members = ["crates/no-graphics-api-sys", "crates/no-graphics-api-utility"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+license = "MIT"
+authors = ["NoGraphicsAPI contributors"]
+repository = "https://github.com/sebbbi/NoGraphicsAPI"
+
+[workspace.dependencies]
+no-graphics-api-sys = { path = "crates/no-graphics-api-sys", version = "0.1.0" }
+
+[workspace.metadata.docs.rs]
+targets = ["x86_64-unknown-linux-gnu"]

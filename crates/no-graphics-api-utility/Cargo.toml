@@ -1,0 +1,17 @@
+[package]
+name = "no-graphics-api-utility"
+description = "Safe Rust ports of the NoGraphicsAPIUtility host-side helpers (allocators, delete queue, shader types)"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+keywords = ["vulkan", "metal", "graphics", "gpu", "allocator"]
+categories = ["graphics", "memory-management"]
+
+[lib]
+name = "no_graphics_api_utility"
+
+[dependencies]
+no-graphics-api-sys.workspace = true

@@ -1,0 +1,22 @@
+[package]
+name = "no-graphics-api-sys"
+description = "Low-level unsafe bindings for NoGraphicsAPI"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+links = "NoGraphicsAPI"
+build = "build.rs"
+keywords = ["vulkan", "metal", "graphics", "gpu", "bindings"]
+categories = ["api-bindings", "graphics", "external-ffi-bindings"]
+
+[lib]
+name = "no_graphics_api_sys"
+
+[dependencies]
+
+[build-dependencies]
+bindgen = "0.73"
+cc = "1"

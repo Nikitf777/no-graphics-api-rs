@@ -18,6 +18,15 @@
 //!   to compile against a different NoGraphicsAPI checkout.
 //! * `VULKAN_SDK` is honored when set. On non-Apple targets the crate links the Vulkan loader
 //!   (`vulkan`, or `vulkan-1` on Windows) and the loader must be installed at runtime.
+//! * On Linux the default `wayland` feature enables the local Wayland presentation patch and needs
+//!   `<wayland-client.h>`. Use `default-features = false` for headless-only builds.
+//!
+//! # Presentation
+//!
+//! Pass `DeviceDesc::window` to create a swapchain-backed device: an `HWND` on Windows, a
+//! `CAMetalLayer*` on macOS, or a `wl_surface*` on Wayland together with `DeviceDesc::display`
+//! (`wl_display*`) and `DeviceDesc::swapchain_extent` (Wayland surfaces report no fixed extent).
+//! Wayland support is a local patch over upstream; see `vendor/patches`.
 //!
 //! # Safety contract
 //!

@@ -63,6 +63,23 @@ unsafe {
 * `ShaderStage::code` takes a `ByteSpan` (precompiled SPIR-V words on Vulkan, a metallib on Metal).
   `entry_point` defaults to a `"main"` C string.
 
+## Linux Wayland presentation (local patch)
+
+Upstream NoGraphicsAPI creates a Vulkan surface only on Windows (Win32) and macOS (Metal layer); on
+Linux `create_device` returns `Error::unsupported` for any window. This crate applies a small local
+patch, `vendor/patches/0001-wayland-presentation.patch`, until that lands upstream:
+
+| Field | Meaning |
+| --- | --- |
+| `DeviceDesc::display` | `wl_display*` on Wayland; unused on Windows/macOS |
+| `DeviceDesc::window` | `wl_surface*` on Wayland (HWND / CAMetalLayer* elsewhere) |
+| `DeviceDesc::swapchain_extent` | Drawable size for surfaces without a fixed extent (Wayland reports none) |
+
+The `wayland` feature (on by default) compiles the patch and requires `<wayland-client.h>` on Linux;
+use `default-features = false` for headless-only builds without Wayland headers. `scripts/sync-vendor.sh`
+re-applies the patches after re-syncing (`--no-patch` skips them) and `tests/presentation.rs` in the
+examples crate presents real frames under a headless weston.
+
 ## Safety
 
 The upstream documentation is authoritative. In short:

@@ -2,8 +2,13 @@
 # Replace vendor/NoGraphicsAPI with the sources from another NoGraphicsAPI checkout.
 set -euo pipefail
 
+apply_patches=1
+if [ "${1:-}" = "--no-patch" ]; then
+    apply_patches=0
+    shift
+fi
 if [ "$#" -ne 1 ]; then
-    echo "usage: $0 /path/to/NoGraphicsAPI" >&2
+    echo "usage: $0 [--no-patch] /path/to/NoGraphicsAPI" >&2
     exit 1
 fi
 
@@ -35,7 +40,15 @@ Source: https://github.com/sebbbi/NoGraphicsAPI
 Commit: $commit
 
 Only \`include/\` and \`src/\` are kept, plus the upstream license files.
+Local patches from \`vendor/patches/\` are applied by \`scripts/sync-vendor.sh\`.
 Re-sync with \`scripts/sync-vendor.sh [path-to-checkout]\`.
 EOF
+
+if [ "$apply_patches" -eq 1 ] && compgen -G "$(dirname "$dst")/patches/*.patch" > /dev/null; then
+    for patch in "$(dirname "$dst")"/patches/*.patch; do
+        echo "applying $(basename "$patch")"
+        patch -p1 --batch --forward --directory "$dst" < "$patch"
+    done
+fi
 
 echo "synced $dst from $src @ $commit"

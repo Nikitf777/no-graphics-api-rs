@@ -15,6 +15,11 @@ categories = ["api-bindings", "graphics", "external-ffi-bindings"]
 [lib]
 name = "no_graphics_api_sys"
 
+[features]
+default = ["wayland"]
+# Wayland presentation (`DeviceDesc::display` + `window`). Ignored on non-Linux targets.
+wayland = []
+
 [dependencies]
 
 [build-dependencies]

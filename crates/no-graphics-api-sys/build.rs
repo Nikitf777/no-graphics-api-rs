@@ -45,6 +45,12 @@ fn main() {
         build.define("NDEBUG", None);
     }
 
+    // Wayland presentation support is a local patch on the vendored backend (see vendor/patches).
+    println!("cargo:rerun-if-env-changed=CARGO_FEATURE_WAYLAND");
+    if std::env::var_os("CARGO_FEATURE_WAYLAND").is_some() && target_os == "linux" {
+        build.define("NGRAPHICSAPI_WAYLAND_SURFACE", None);
+    }
+
     let vulkan_sdk = std::env::var_os("VULKAN_SDK").map(PathBuf::from);
     if let Some(sdk) = &vulkan_sdk {
         for dir in [sdk.join("Include"), sdk.join("include")] {

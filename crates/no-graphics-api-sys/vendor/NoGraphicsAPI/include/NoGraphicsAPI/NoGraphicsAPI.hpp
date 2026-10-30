@@ -460,7 +460,8 @@ enum class ColorSpace : uint32 { srgb, extended_srgb_linear };
 // The window/layer must outlive the device. Other calls follow the object-level threading contract below.
 struct DeviceDesc
 {
-    void* window = nullptr; // HWND on Windows; CAMetalLayer* on macOS/iOS. Null creates a headless device.
+    void* window = nullptr; // HWND on Windows; CAMetalLayer* on macOS/iOS; wl_surface* on Wayland. Null creates a headless device.
+    void* display = nullptr; // wl_display* on Wayland. Unused on Windows and macOS.
     Format swapchain_format = Format::undefined;
     ColorSpace swapchain_color_space = ColorSpace::srgb;
     uint32 desired_swapchain_image_count = 2; // Vulkan: 1..8 presentation contexts. Metal clamps to 2..3 drawables.
@@ -470,6 +471,8 @@ struct DeviceDesc
     uint32 desired_compute_queue_count = 0;
     uint32 desired_copy_queue_count = 0;
     uint32 timestamp_query_count = 256; // Per command buffer; zero disables timestamps.
+    // Drawable size. Required when the surface has no fixed extent (Wayland); ignored when it does.
+    uint32x2 swapchain_extent = {};
 };
 
 struct DeviceInit

@@ -108,6 +108,7 @@ impl Default for DeviceDesc {
     fn default() -> Self {
         Self {
             window: core::ptr::null_mut(),
+            display: core::ptr::null_mut(),
             swapchain_format: Format::undefined,
             swapchain_color_space: ColorSpace::srgb,
             desired_swapchain_image_count: 2,
@@ -116,6 +117,7 @@ impl Default for DeviceDesc {
             desired_compute_queue_count: 0,
             desired_copy_queue_count: 0,
             timestamp_query_count: 256,
+            swapchain_extent: uint32x2::default(),
         }
     }
 }

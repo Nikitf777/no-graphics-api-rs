@@ -26,7 +26,8 @@
 //! Pass `DeviceDesc::window` to create a swapchain-backed device: an `HWND` on Windows, a
 //! `CAMetalLayer*` on macOS, or a `wl_surface*` on Wayland together with `DeviceDesc::display`
 //! (`wl_display*`) and `DeviceDesc::swapchain_extent` (Wayland surfaces report no fixed extent).
-//! Wayland support is a local patch over upstream; see `vendor/patches`.
+//! Call [`set_swapchain_extent`] on resize; a zero component keeps the current size. Wayland support
+//! is a local patch over upstream; see `vendor/patches`.
 //!
 //! # Safety contract
 //!
@@ -107,6 +108,7 @@ pub use ffi::root::{
     nga_read_timestamps as read_timestamps, nga_reset_command_pool as reset_command_pool,
     nga_set_depth_stencil as set_depth_stencil, nga_set_error_callback as set_error_callback,
     nga_set_sampler_descriptor_heap as set_sampler_descriptor_heap, nga_set_scissor as set_scissor,
+    nga_set_swapchain_extent as set_swapchain_extent,
     nga_set_swapchain_format as set_swapchain_format,
     nga_set_texture_descriptor_heap as set_texture_descriptor_heap,
     nga_set_viewport as set_viewport, nga_submit as submit,

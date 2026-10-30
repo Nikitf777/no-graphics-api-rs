@@ -705,6 +705,9 @@ void destroy_device(Device* device) noexcept;
 // Call after wait_idle, outside an acquired frame. Unsupported pairs leave the current mode unchanged.
 // A zero-size drawable defers swapchain recreation until acquire sees a nonzero extent.
 [[nodiscard]] Error set_swapchain_format(Device* device, Format format, ColorSpace color_space) noexcept;
+// Resizes the drawable for surfaces without a fixed extent (Wayland). Call outside an acquired frame.
+// A zero component keeps the current extent, which covers minimized windows.
+[[nodiscard]] Error set_swapchain_extent(Device* device, uint32x2 extent) noexcept;
 
 [[nodiscard]] TimelineSemaphore* create_timeline_semaphore(Device* device, uint64 initial_value = 0) noexcept;
 void destroy_timeline_semaphore(TimelineSemaphore* semaphore) noexcept;

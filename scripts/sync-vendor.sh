@@ -23,9 +23,10 @@ for required in include/NoGraphicsAPI/NoGraphicsAPI.hpp src/NoGraphicsAPI.cpp sr
     fi
 done
 
-rm -rf "$dst/include" "$dst/src"
-mkdir -p "$dst/include" "$dst/src"
+rm -rf "$dst/include" "$dst/src" "$dst/utility"
+mkdir -p "$dst/include" "$dst/src" "$dst/utility"
 cp -r "$src/include/NoGraphicsAPI" "$dst/include/"
+cp -r "$src/utility/include/NoGraphicsAPIUtility" "$dst/utility/"
 cp "$src/src/NoGraphicsAPI.cpp" "$src/src/BufferAddressMap.hpp" "$dst/src/"
 if [ -f "$src/src/NoGraphicsAPIMetal.mm" ]; then
     cp "$src/src/NoGraphicsAPIMetal.mm" "$dst/src/"
@@ -39,7 +40,7 @@ cat > "$dst/UPSTREAM.md" <<EOF
 Source: https://github.com/sebbbi/NoGraphicsAPI
 Commit: $commit
 
-Only \`include/\` and \`src/\` are kept, plus the upstream license files.
+Only \`include/\`, \`src/\`, and \`utility/include/\` are kept, plus the upstream license files.
 Local patches from \`vendor/patches/\` are applied by \`scripts/sync-vendor.sh\`.
 Re-sync with \`scripts/sync-vendor.sh [path-to-checkout]\`.
 EOF

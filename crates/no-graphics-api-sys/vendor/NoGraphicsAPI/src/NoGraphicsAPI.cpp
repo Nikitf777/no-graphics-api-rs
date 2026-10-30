@@ -2563,6 +2563,19 @@ Error set_swapchain_format(Device* device, Format format, ColorSpace color_space
     return error;
 }
 
+Error set_swapchain_extent(Device* device, uint32x2 extent) noexcept
+{
+    assert(device && "set_swapchain_extent called with a null device");
+    assert(!device->acquired_swapchain && "set_swapchain_extent must be called outside presentation");
+    if (!device->swapchain)
+        return Error::unsupported;
+    if (!extent.x || !extent.y)
+        return Error::none;
+    device->requested_extent = extent;
+    device->swapchain->recreate_required = true;
+    return Error::none;
+}
+
 uint32x2 get_drawable_extent(Device* device) noexcept
 {
     assert(device && "get_drawable_extent called with a null device");

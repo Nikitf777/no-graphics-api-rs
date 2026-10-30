@@ -23,6 +23,7 @@ const gpu::DeviceCaps* nga_get_device_caps(const gpu::Device* device);
 bool nga_supports_texture_format(const gpu::Device* device, gpu::Format format, gpu::TextureUsage usage);
 void nga_get_drawable_extent(gpu::Device* device, gpu::uint32x2* out);
 gpu::Error nga_set_swapchain_format(gpu::Device* device, gpu::Format format, gpu::ColorSpace color_space);
+gpu::Error nga_set_swapchain_extent(gpu::Device* device, gpu::uint32x2 extent);
 
 // Timeline semaphores.
 gpu::TimelineSemaphore* nga_create_timeline_semaphore(gpu::Device* device, gpu::uint64 initial_value);

@@ -19,6 +19,16 @@
  };
  
  struct DeviceInit
+@@ -702,6 +705,9 @@
+ // Call after wait_idle, outside an acquired frame. Unsupported pairs leave the current mode unchanged.
+ // A zero-size drawable defers swapchain recreation until acquire sees a nonzero extent.
+ [[nodiscard]] Error set_swapchain_format(Device* device, Format format, ColorSpace color_space) noexcept;
++// Resizes the drawable for surfaces without a fixed extent (Wayland). Call outside an acquired frame.
++// A zero component keeps the current extent, which covers minimized windows.
++[[nodiscard]] Error set_swapchain_extent(Device* device, uint32x2 extent) noexcept;
+ 
+ [[nodiscard]] TimelineSemaphore* create_timeline_semaphore(Device* device, uint64 initial_value = 0) noexcept;
+ void destroy_timeline_semaphore(TimelineSemaphore* semaphore) noexcept;
 --- a/src/NoGraphicsAPI.cpp
 +++ b/src/NoGraphicsAPI.cpp
 @@ -10,6 +10,9 @@
@@ -172,7 +182,27 @@
      if (extent.width == UINT_MAX)
          return Error::unsupported;
      if ((capabilities.supportedUsageFlags & VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT) == 0)
-@@ -2527,10 +2574,10 @@
+@@ -2516,6 +2563,19 @@
+     return error;
+ }
+ 
++Error set_swapchain_extent(Device* device, uint32x2 extent) noexcept
++{
++    assert(device && "set_swapchain_extent called with a null device");
++    assert(!device->acquired_swapchain && "set_swapchain_extent must be called outside presentation");
++    if (!device->swapchain)
++        return Error::unsupported;
++    if (!extent.x || !extent.y)
++        return Error::none;
++    device->requested_extent = extent;
++    device->swapchain->recreate_required = true;
++    return Error::none;
++}
++
+ uint32x2 get_drawable_extent(Device* device) noexcept
+ {
+     assert(device && "get_drawable_extent called with a null device");
+@@ -2527,10 +2587,10 @@
      const Error error = error_from_vk(vkGetPhysicalDeviceSurfaceCapabilitiesKHR(device->physical_device, device->surface, &capabilities),
          "vkGetPhysicalDeviceSurfaceCapabilitiesKHR");
      if (error != Error::none) return {};

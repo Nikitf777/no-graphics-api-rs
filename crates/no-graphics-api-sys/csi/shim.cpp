@@ -40,6 +40,11 @@ gpu::Error nga_set_swapchain_format(gpu::Device* device, gpu::Format format, gpu
     return gpu::set_swapchain_format(device, format, color_space);
 }
 
+gpu::Error nga_set_swapchain_extent(gpu::Device* device, gpu::uint32x2 extent)
+{
+    return gpu::set_swapchain_extent(device, extent);
+}
+
 gpu::TimelineSemaphore* nga_create_timeline_semaphore(gpu::Device* device, gpu::uint64 initial_value)
 {
     return gpu::create_timeline_semaphore(device, initial_value);

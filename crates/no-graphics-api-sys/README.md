@@ -74,6 +74,7 @@ patch, `vendor/patches/0001-wayland-presentation.patch`, until that lands upstre
 | `DeviceDesc::display` | `wl_display*` on Wayland; unused on Windows/macOS |
 | `DeviceDesc::window` | `wl_surface*` on Wayland (HWND / CAMetalLayer* elsewhere) |
 | `DeviceDesc::swapchain_extent` | Drawable size for surfaces without a fixed extent (Wayland reports none) |
+| `set_swapchain_extent(device, extent)` | Follows window resizes on those surfaces; a zero component keeps the current size |
 
 The `wayland` feature (on by default) compiles the patch and requires `<wayland-client.h>` on Linux;
 use `default-features = false` for headless-only builds without Wayland headers. `scripts/sync-vendor.sh`

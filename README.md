@@ -7,6 +7,7 @@ thin GPU abstraction over Vulkan (Windows/Linux) and Metal 4 (macOS/iOS).
 | --- | --- |
 | [`no-graphics-api-sys`](crates/no-graphics-api-sys) | Low-level `unsafe` bindings: bindgen over a C ABI shim compiled against the C++ headers |
 | [`no-graphics-api-utility`](crates/no-graphics-api-utility) | Safe Rust ports of the host-side `NoGraphicsAPIUtility` helpers (allocators, delete queue, upload queue, texture upload, shader types) |
+| [`no-graphics-api-examples`](crates/no-graphics-api-examples) | Windowed Rust ports of the `triangle`, `cube`, and `deferred_renderer` examples |
 
 Upstream commit: `ffd9f2a` (vendored under `crates/no-graphics-api-sys/vendor/NoGraphicsAPI`).
 
@@ -59,6 +60,30 @@ unsafe {
 }
 ```
 
+## Linux Wayland presentation
+
+Upstream creates a Vulkan surface only on Windows and macOS. `no-graphics-api-sys` carries a small
+local patch (`vendor/patches/0001-wayland-presentation.patch`) that adds Wayland surface creation and
+an application-provided swapchain extent, applied automatically by `scripts/sync-vendor.sh` and
+covered by an end-to-end presentation test under headless weston. It is default-enabled on Linux
+through the `wayland` feature; disable it with `default-features = false` if you build headless-only
+without Wayland headers.
+
+## Examples
+
+The ports open a `winit` window, create a swapchain-backed device, and render until the window
+closes, mirroring the upstream examples (`NGA_EXAMPLE_FRAMES=n` exits early for smoke runs):
+
+```sh
+cargo run -p no-graphics-api-examples --example triangle
+cargo run -p no-graphics-api-examples --example cube
+cargo run -p no-graphics-api-examples --example deferred
+```
+
+Windowing follows the API: Wayland on Linux (via the vendored patch), Win32 on Windows; macOS needs a
+`CAMetalLayer` and is not wired up. Shader SPIR-V is committed; regenerate it with
+`crates/no-graphics-api-examples/scripts/build-shaders.sh` (requires `slangc` and `spirv-val`).
+
 ## Testing
 
 ```sh
@@ -66,7 +91,8 @@ cargo test --workspace
 ```
 
 Device-backed tests create a headless device and skip when no Vulkan device is available. The
-allocator, layout, and delete-queue logic tests need no GPU.
+allocator, layout, and delete-queue logic tests need no GPU. The example tests also verify the
+rendered pixels.
 
 ## Updating upstream
 

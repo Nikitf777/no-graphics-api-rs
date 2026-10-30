@@ -1,0 +1,16 @@
+[package]
+name = "no-graphics-api-examples"
+description = "Headless Rust ports of the NoGraphicsAPI examples"
+publish = false
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+
+[dependencies]
+no-graphics-api-sys.workspace = true
+no-graphics-api-utility = { path = "../no-graphics-api-utility", version = "0.1.0" }
+glam = "0.34"
+winit = { version = "0.30", default-features = false, features = ["wayland", "wayland-dlopen", "rwh_06"] }

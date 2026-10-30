@@ -1,6 +1,10 @@
 [workspace]
 resolver = "3"
-members = ["crates/no-graphics-api-sys", "crates/no-graphics-api-utility"]
+members = [
+    "crates/no-graphics-api-sys",
+    "crates/no-graphics-api-utility",
+    "crates/no-graphics-api-examples",
+]
 
 [workspace.package]
 version = "0.1.0"

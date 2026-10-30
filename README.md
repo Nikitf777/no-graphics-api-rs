@@ -6,7 +6,7 @@ thin GPU abstraction over Vulkan (Windows/Linux) and Metal 4 (macOS/iOS).
 | Crate | Contents |
 | --- | --- |
 | [`no-graphics-api-sys`](crates/no-graphics-api-sys) | Low-level `unsafe` bindings: bindgen over a C ABI shim compiled against the C++ headers |
-| [`no-graphics-api-utility`](crates/no-graphics-api-utility) | Safe Rust ports of the host-side `NoGraphicsAPIUtility` helpers (allocators, delete queue, shader types) |
+| [`no-graphics-api-utility`](crates/no-graphics-api-utility) | Safe Rust ports of the host-side `NoGraphicsAPIUtility` helpers (allocators, delete queue, upload queue, texture upload, shader types) |
 
 Upstream commit: `ffd9f2a` (vendored under `crates/no-graphics-api-sys/vendor/NoGraphicsAPI`).
 

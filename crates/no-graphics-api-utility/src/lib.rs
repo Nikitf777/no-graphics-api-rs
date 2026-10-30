@@ -11,10 +11,12 @@
 //! | [`heap_allocator`] | `heap_allocator.hpp` |
 //! | [`texture_allocator`] | `texture_allocator.hpp` |
 //! | [`delete_queue`] | `delete_queue.hpp` |
+//! | [`upload_queue`] | `upload_queue.hpp` |
+//! | [`texture_upload`] | `texture_upload.hpp` |
 //!
 //! Not ported: `math.hpp` (operator library — use a Rust math crate and convert at the edge, keeping
-//! the [`shader_types`] layouts for anything a shader reads), `upload_queue.hpp` /
-//! `texture_upload.hpp`, and `fixed_function.hpp` (its role is replaced by boxed closures).
+//! the [`shader_types`] layouts for anything a shader reads) and `fixed_function.hpp` (its role is
+//! replaced by boxed closures).
 //!
 //! These are ports, not bindings: behavior and API match upstream closely, but exhausted allocations
 //! report `None` instead of an empty aggregate, and C++ move semantics become ordinary Rust moves.
@@ -33,9 +35,12 @@ pub mod delete_queue;
 pub mod heap_allocator;
 pub mod shader_types;
 pub mod texture_allocator;
+pub mod texture_upload;
+pub mod upload_queue;
 
 pub use bump_allocator::BumpAllocator;
 pub use delete_queue::DeleteQueue;
 pub use heap_allocator::{HeapAllocation, HeapAllocator};
 pub use shader_types::*;
 pub use texture_allocator::{PlacedTexture, TextureAllocator};
+pub use upload_queue::{SubmitCallback, UploadFrame, UploadQueue, UploadQueueStats};
